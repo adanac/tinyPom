@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mybatis.mapper.StudentMapper" >
+  <resultMap id="BaseResultMap" type="com.adanac.ssm.tiny.intf.common.bean.Student" >
+    <id column="student_id" property="studentId" jdbcType="INTEGER" />
+    <result column="student_name" property="studentName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    student_id, student_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from student
+    where student_id = #{studentId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from student
+    where student_id = #{studentId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.adanac.ssm.tiny.intf.common.bean.Student" >
+    insert into student (student_id, student_name)
+    values (#{studentId,jdbcType=INTEGER}, #{studentName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.adanac.ssm.tiny.intf.common.bean.Student" >
+    insert into student
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="studentId != null" >
+        student_id,
+      </if>
+      <if test="studentName != null" >
+        student_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="studentId != null" >
+        #{studentId,jdbcType=INTEGER},
+      </if>
+      <if test="studentName != null" >
+        #{studentName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.adanac.ssm.tiny.intf.common.bean.Student" >
+    update student
+    <set >
+      <if test="studentName != null" >
+        student_name = #{studentName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where student_id = #{studentId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.adanac.ssm.tiny.intf.common.bean.Student" >
+    update student
+    set student_name = #{studentName,jdbcType=VARCHAR}
+    where student_id = #{studentId,jdbcType=INTEGER}
+  </update>
+  <select id="selectAllStudents" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+       select
+       <include refid="Base_Column_List"/>
+       from student
+       where 1 = 1
+   </select>
+   <select id="dynamicForeach" resultMap="BaseResultMap">
+       select
+       <include refid="Base_Column_List"/>
+       from student
+       where student_name like "%"#{studentName}"%" and student_id in
+       <foreach collection="ids" index="index" item="sid" open="(" separator="," close=")">
+            #{sid}
+        </foreach>
+   </select>
+   <insert id="batchInsertStudents" useGeneratedKeys="true" parameterType="java.util.List">
+	    <selectKey resultType="int" keyProperty="student_id" order="AFTER">  
+	        SELECT  
+	        LAST_INSERT_ID()  
+	    </selectKey>
+	    insert into student(student_id, student_name) values
+	    <foreach collection="list" item="student" index="index" separator=",">
+	        (#{student.studentId, jdbcType=INTEGER}, #{student.studentName, jdbcType=VARCHAR})
+	    </foreach>
+  </insert>
+  <insert id="batchInsertStudents2" useGeneratedKeys="true" parameterType="java.util.List">
+	    <selectKey resultType="int" keyProperty="student_id" order="AFTER">  
+	        SELECT  
+	        LAST_INSERT_ID()  
+	    </selectKey>
+	    insert into student(student_id, student_name) values
+	    <foreach collection="list" item="student" index="index" separator=",">
+	        (#{student.studentId, jdbcType=INTEGER}, #{student.studentName, jdbcType=VARCHAR})
+	    </foreach>
+  </insert>
+  <delete id="batchDeleteStudents" parameterType="java.util.List" >
+    delete from student
+    where student_id in
+    <foreach item="idList" collection="list" open="(" separator="," close=")">
+        #{idList}
+    </foreach>
+  </delete>
+  <delete id="batchDeleteStudents2" parameterType="int" >
+    delete from student
+    where student_id in
+    <foreach item="idList" collection="array" open="(" separator="," close=")">
+        #{idList}
+    </foreach>
+  </delete>
+</mapper>

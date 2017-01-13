@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!-- 数据源1 (demo数据库)-->
+    <bean id="dataSource1" class="org.apache.tomcat.jdbc.pool.DataSource">
+        <property name="driverClassName" value="${partition1.driverClassName}"/>
+        <property name="url" value="${partition1.url}"/>
+        <property name="username" value="${partition1.username}"/>
+        <property name="password" value="${partition1.password}"/>
+        <property name="maxActive" value="${partition1.maxActive}"/>
+        <property name="maxWait" value="${partition1.maxWait}"/>
+        <property name="initialSize" value="${partition1.initialSize}"/>
+        <property name="maxIdle" value="${partition1.maxActive}"/>
+        <property name="minIdle" value="${partition1.minIdle}"/>
+        <property name="testWhileIdle" value="${partition1.testWhileIdle}"/>
+        <property name="testOnReturn" value="${partition1.testOnReturn}"/>
+        <property name="testOnBorrow" value="${partition1.testOnBorrow}"/>
+        <property name="validationQuery" value="${partition1.validationQuery}"/>
+        <property name="validationInterval" value="30000" />
+        <property name="timeBetweenEvictionRunsMillis" value="${partition1.timeBetweenEvictionRunsMillis}"/>
+        <property name="minEvictableIdleTimeMillis" value="${partition1.minEvictableIdleTimeMillis}"/>
+    </bean>
+
+    <!-- SqlSessionFactory配置 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource1"/>
+        <property name="configLocation" value="classpath:config/mybatis-config.xml"/>
+        <property name="mapperLocations" value="classpath*:mybatis.mapper/*.xml"/>
+    </bean>
+
+    <!-- 事务配置 -->
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource1"/>
+    </bean>
+</beans>
