@@ -7,7 +7,7 @@
 
 'use strict';
 
-var API_HOST = 'http://192.168.24.48';
+var API_HOST = 'http://localhost';
 var API_PORT = '8080';
 var API_BASE = '/api';
 

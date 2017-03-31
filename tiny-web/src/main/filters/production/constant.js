@@ -7,7 +7,7 @@
 
 'use strict';
 
-var API_HOST = 'http://kwms.haiziwang.com';
+var API_HOST = 'http://localhost';
 var API_PORT = '80';
 var API_BASE = '/api';
 

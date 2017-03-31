@@ -97,7 +97,7 @@
 
                 <!--主日志配置-->
                 <log.type>INFO,ROLLING_FILE</log.type>
-                <log.location>${catalina.home}/logs</log.location>
+                <log.location>${env.CATALINA_HOME}/logs</log.location>
                 <log.name>kwms.log</log.name>
 
 
@@ -145,15 +145,6 @@
         <db.poolPreparedStatements>true</db.poolPreparedStatements>
         <db.maxPoolPreparedStatementPerConnectionSize>20</db.maxPoolPreparedStatementPerConnectionSize>
         <db.filters>stat</db.filters>
-
-        <!--DB1 配置-->
-        <db1.driverClassName>com.mysql.jdbc.Driver</db1.driverClassName>
-        <db1.url><![CDATA[jdbc:mysql://${db1.ip}:${db1.port}/${db1.database}?useUnicode=true&characterEncoding=utf8&autoReconnect=true&autoReconnectForPools=true&allowMultiQueries=true]]></db1.url>
-        <db1.maxActive>50</db1.maxActive>
-        <db1.maxWait>60000</db1.maxWait>
-        <db1.threadPoolSize>5</db1.threadPoolSize>
-        <db1.initialSize>10</db1.initialSize>
-        <db1.minIdle>1</db1.minIdle>
     </properties>
 
 	<!-- 部署到私服  -->

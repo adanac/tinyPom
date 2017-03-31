@@ -17,6 +17,4 @@
   	<module>tiny-intf-dao</module>
   </modules>
 
-  <dependencies>
-  </dependencies>
 </project>
