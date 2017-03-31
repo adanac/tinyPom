@@ -6,9 +6,9 @@
   <packaging>pom</packaging>
   
   <modules>
-  	<module>../tiny-intf</module>
-  	<module>../tiny-service</module>
-  	<module>../tiny-web</module>
+  	<module>tiny-intf</module>
+  	<module>tiny-service</module>
+  	<module>tiny-web</module>
   </modules>
    <build>
         <finalName>tiny</finalName>
